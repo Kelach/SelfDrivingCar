@@ -1,0 +1,9 @@
+{
+  "name": "self-driving-car",
+  "version": "0.0.0",
+  "description": "SelfDrivingCar",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  }
+}
