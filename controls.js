@@ -1,17 +1,19 @@
 // JavaScript source code
 
 class Controls {
-    contstructor() {
+
+    constructor() {
         this.foward = false;
         this.reverse = false;
         this.left = false;
         this.right = false;
 
-        this.#addKBListeners();
+        this.#addKeyboardListeners();
     }
-    #addKBListeners() {
+
+    #addKeyboardListeners() {
         document.onkeydown = (event) => {
-            switch (event.key) {
+            switch(event.key) {
                 case "ArrowLeft":
                     this.left = true;
                     break;
@@ -25,7 +27,8 @@ class Controls {
                     this.reverse = true;
                     break;
             }
-        }
+            console.table(this);
+        }   
         document.onkeyup = (event) => {
             switch (event.key) {
                 case "ArrowLeft":
