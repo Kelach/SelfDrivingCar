@@ -28,9 +28,17 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="car.js" />
+    <Content Include="controls.js" />
+    <Content Include="index.html" />
     <Content Include="main.js" />
+    <Content Include="network.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="road-utils.js" />
+    <Content Include="road.js" />
+    <Content Include="sensor.js" />
+    <Content Include="style.css" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>
