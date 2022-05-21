@@ -39,6 +39,7 @@
     <Content Include="road.js" />
     <Content Include="sensor.js" />
     <Content Include="style.css" />
+    <Content Include="visualizer.js" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

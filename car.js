@@ -12,8 +12,14 @@ class Car {
 
         this.acceleration = 0.3;
         this.friction = 0.1;
-        if (controlType=="KEYS"){
+
+        this.useBrain = controlType == "AI";
+
+        if (controlType!="NOKEYS"){
             this.sensor = new Sensor(this)
+            this.brain = new NeuralNet(
+                [this.sensor.rayCount, 6, 4]
+            );
         }
         this.controls = new Controls(controlType);
 
@@ -57,7 +63,22 @@ class Car {
         }
         if (this.sensor) {
             this.sensor.update(roadBorders, traffic);
+            const offsets = this.sensor.readings.map(
+                s => s == null?0 : 1 - s.offset
+            );
+            const outputs = NeuralNet.feedFoward(offsets, this.brain)
+            console.log(outputs);
+
+            if (this.useBrain) {
+                this.controls.left = outputs[0];
+                this.controls.reverse = outputs[1];
+                this.controls.forward = outputs[2];
+                this.controls.right = outputs[3];
+
+            }
         }
+
+
     }
 
     #assessDamage(roadBorders, traffic) {
