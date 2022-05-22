@@ -12,6 +12,9 @@ const networkCtx = networkCanvas.getContext("2d");
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
 const N = 100;
 const cars = generateCars(N);
+
+let delay = 0;
+let delay2 = 0;
 let bestCar = cars[0];
 if (localStorage.getItem("bestBrain")) {
     for (let i = 0; i < cars.length; i++) {
@@ -24,10 +27,9 @@ if (localStorage.getItem("bestBrain")) {
     }
    
 }
-const traffic = [ 
-    new Car(road.getLaneCenter(1), -100, 30, 50, 10, "NOKEYS"),
-    new Car(road.getLaneCenter(0), -300, 30, 50, 10, "NOKEYS"),
-    new Car(road.getLaneCenter(2), -200, 30, 50, 20, "NOKEYS")];
+
+
+const traffic = generateTraffic(5, bestCar, "START");
 
 
 animate();
@@ -42,6 +44,39 @@ function discard() {
     localStorage.removeItem("bestBrain");
 }
 
+function generateTraffic(N, mainCar, type) {
+    let traffic = [];
+
+
+    // generates N number of "NOKEYS" cars with random speeds, x, and (mainCar.y +) y values). 
+    
+    for (let i = 1; i <= N; i++) {
+        const randMaxSpeed = (Math.random() * 10) + 5;
+        let randY = 0;
+        if (type == "START") {
+            randY = Math.random() < 0.1 ?
+                -(100 + Math.abs(mainCar.y)) :
+                -(Math.abs((Math.random()) * 100) + Math.abs(mainCar.y));
+        } else if (type != "START") {
+            randY = -(1000 + Math.abs(mainCar.y));
+        }
+
+        
+        const randLane = getRandomInt(road.laneCount);
+        traffic.push(new Car(road.getLaneCenter(randLane),
+            randY, 30, 50, randMaxSpeed, "NOKEYS"))
+    }
+
+    if (N == 1) {
+        traffic = traffic[0];
+    }
+
+    return traffic;
+}
+function deleteCar(type, car) {
+    index = type.findIndex(car=>car.y==car.y);      //not sure what this does but function is needed as arg. 
+    type.splice(index, 1);
+}
 function generateCars(N) {
     const cars = [];
     for (let i = 1; i <= N; i++) {
@@ -51,17 +86,22 @@ function generateCars(N) {
 }
 
 function animate(time) {
+
+    // finds "best car" defined as Car with most -y
+    bestCar = cars.find(
+        c => c.y == Math.min(
+            ...cars.map(c => c.y)
+        ));
+
+    spawnTraffic(bestCar);
+    
+
     for (let i = 0; i < traffic.length; i++) {
         traffic[i].update(road.borders,[]);
     }
     for (let i = 0; i < cars.length; i++) {
         cars[i].update(road.borders, traffic);
     }
-
-    bestCar = cars.find(
-        c => c.y == Math.min(
-            ...cars.map(c => c.y)
-        ));
 
     carCanvas.height = window.innerHeight;
     networkCanvas.height = window.innerHeight;

@@ -48,3 +48,46 @@ function getRGBA(value) {
 
     return ("rgba(" + R + "," + G + "," + B + "," + alpha + ")");
 }
+
+function getRandomInt(N) {
+   const min = Math.ceil(0);
+   const max = Math.floor(N);
+
+    return Math.floor(Math.random() * (N));
+
+
+}
+
+function spawnTraffic(bestCar) {
+    //trafficDistances = Math.abs(...traffic);
+
+
+   const trafficMax = traffic.find(         //finds traffic farthest(-direction) from main car
+        c => c.y == Math.max(
+            ...traffic.map(c => c.y)
+        ));
+    const trafficMin = traffic.find(         //finds traffic farthest(+direction) from main car
+        c => c.y == Math.min(
+            ...traffic.map(c => c.y)
+        ));
+
+    if ( Math.abs(Math.abs(Math.abs(bestCar.y) - Math.abs(trafficMax.y))) > 1500) {
+        delay++;                                             // deletes farthest car from traffic, and adds new rand car. 
+        console.log(delay);
+        if (delay > 100) {
+            deleteCar(traffic, trafficMax);
+            traffic.push(generateTraffic(1, bestCar, "!STRAT"));
+            delay = 0
+        }
+
+    } else if (Math.abs(trafficMin.y) - Math.abs(bestCar.y) > 1500) {
+        delay2++;
+        console.log(delay2);
+        if (delay2 > 100) {
+            deleteCar(traffic, trafficMin);
+            traffic.push(generateTraffic(1, bestCar, "!STRAT"));
+            delay2 = 0
+        }
+    }
+
+}
