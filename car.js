@@ -66,8 +66,7 @@ class Car {
             const offsets = this.sensor.readings.map(
                 s => s == null?0 : 1 - s.offset
             );
-            const outputs = NeuralNet.feedFoward(offsets, this.brain)
-            console.log(outputs);
+            const outputs = NeuralNet.feedFoward(offsets, this.brain);
 
             if (this.useBrain) {
                 this.controls.left = outputs[0];
@@ -134,7 +133,7 @@ class Car {
 
     }
 
-    draw(ctx, color) {
+    draw(ctx, color, drawSensor) {
         if (this.damaged) {
             ctx.fillStyle = "red";
         } else {
@@ -146,7 +145,7 @@ class Car {
             ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
         }
         ctx.fill();
-        if (this.sensor) {
+        if ((this.sensor) && (drawSensor)) {
             this.sensor.draw(ctx);
         }
 
