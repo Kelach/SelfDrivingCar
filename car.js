@@ -133,7 +133,7 @@ class Car {
 
     }
 
-    draw(ctx, color, drawSensor) {
+    draw(ctx, color, drawSensor=false) {
         if (this.damaged) {
             ctx.fillStyle = "red";
         } else {
