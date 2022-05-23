@@ -71,21 +71,29 @@ function spawnTraffic(bestCar) {
             ...traffic.map(c => c.y)
         ));
 
-    if ( Math.abs(Math.abs(Math.abs(bestCar.y) - Math.abs(trafficMax.y))) > 1500) {
+    if ( Math.abs(Math.abs(Math.abs(bestCar.y) - Math.abs(trafficMax.y))) > 800) {
         delay++;                                             // deletes farthest car from traffic, and adds new rand car. 
-        console.log(delay);
-        if (delay > 100) {
+/*        console.log(delay);*/
+        if (delay > 70) {
             deleteCar(traffic, trafficMax);
-            traffic.push(generateTraffic(1, bestCar, "!STRAT"));
+            generateTraffic(1, bestCar, "!START");
+            if (traffic.length < 8) {
+                generateTraffic(2, bestCar, "!START");
+            } else if (traffic.length>5){
+                delay3--;
+            }
+
             delay = 0
         }
 
-    } else if (Math.abs(trafficMin.y) - Math.abs(bestCar.y) > 1500) {
+    } else if (Math.abs(Math.abs(Math.abs(bestCar.y) - Math.abs(trafficMin.y))) > 800) {
         delay2++;
-        console.log(delay2);
-        if (delay2 > 100) {
+/*        console.log(delay2);*/
+        if (delay2 > 50) {
             deleteCar(traffic, trafficMin);
-            traffic.push(generateTraffic(1, bestCar, "!STRAT"));
+            if (traffic.length < 8) {
+            generateTraffic(1, bestCar, "!START");
+            }
             delay2 = 0
         }
     }
