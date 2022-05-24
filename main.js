@@ -10,24 +10,24 @@ const carCtx = carCanvas.getContext("2d");
 const networkCtx = networkCanvas.getContext("2d");
 
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
-const N = 1000;
+const N = 500;
 const M = 100;
 
 const startTime = performance.now();
 
 const cars = generateCars(N);
 
+
 let score = 0;
 let traffic = [];
-let counter = 0;
+let counter = 10;
 let delay = 0;
 let delay2 = 0;
 let delay3 = 0;
+let delay4 = 0;
 let bestCar = cars[0];
 let bestFitness = 0
 
-//let carRecord = JSON.parse(                         
-//    localStorage.getItem("carRecord"));
 
 let recordV = JSON.parse(
     localStorage.getItem("recordV"));
@@ -38,18 +38,19 @@ if (localStorage.getItem("bestBrain")) {
             localStorage.getItem("bestBrain")
         );
         if (i != 0) {
-            NeuralNet.mutate(cars[i].brain,0.2)
+            NeuralNet.mutate(cars[i].brain,0.1)
         }
     }
    
 }
 
 
-generateTraffic(2, bestCar, "START");
-generateTraffic(1, bestCar, "FIXED");
-
+generateTraffic(1, bestCar, "START");
+generateTraffic(1, bestCar, "FIXED"); 
 
 animate();
+
+
 
 function getTime() {
     const currTime = performance.now();
@@ -115,7 +116,7 @@ function deleteCar(type, value) {
 function generateCars(N) {
     const cars = [];
     for (let i = 1; i <= N; i++) {
-        cars.push(new Car(road.getLaneCenter(1),100,30,50,20,"AI"))
+        cars.push(new Car(road.getLaneCenter(1), 100, 30, 50, 20, "AI"))
     }
     return cars;
 }
@@ -158,6 +159,7 @@ function animate(time) {
     bestFitness = getTime() == 0 ? 0 : (-bestCar.y / getTime()) + (bestCar.score * 20);
 
     if (bestFitness > recordFitness) {
+/*        console.log(bestFitness);*/
         save();
         console.log("saved");
     }
@@ -166,13 +168,13 @@ function animate(time) {
         || (bestCar.speed < 3) || (bestCar.damaged)) {                          
         delay3++;                                                               
 
-        if ((delay3 > 400)) {
+        if ((delay3 > 300)) {
             console.log("reset needed");
             location.reload();
             counter++
         }
 
-    } else if (bestCar.speed > 4) {
+    } else if (bestCar.speed > 3.8) {
         delay3 = delay3 < 0 ? 0 : delay3 - 2;
     }
 
@@ -188,6 +190,18 @@ function animate(time) {
         traffic[i].draw(carCtx, "gray");
     }
     carCtx.globalAlpha = 0.2;
+
+  //  deletes damaged cars
+    for (let i = 0; i < cars.length; i++) {
+        if ((cars[i].damaged==true) && (cars.length > 1)) {
+            delay4++;
+            if (delay4 > 90) {
+                deleteCar(cars, cars[i])
+                delay4 = 0;
+            }
+        }
+    }
+
     for (let i = 0; i < cars.length; i++) {
         cars[i].draw(carCtx, "blue");
     }

@@ -16,13 +16,14 @@ class Car {
         this.useBrain = controlType == "AI";
 
         if (controlType != "NOKEYS") {
-            this.score = 0
-            this.sensor = new Sensor(this)
+            this.score = 0;
+            this.sensor = new Sensor(this);
             this.brain = new NeuralNet(
                 [this.sensor.rayCount, 6, 6, 4]
             );
         } else if (controlType == "NOKEYS") {
             this.passed = false;
+            
         }
         this.controls = new Controls(controlType);
 
@@ -79,9 +80,8 @@ class Car {
 
             }
         }
-        if (this.score>=0) {
+        if (this.score >= 0) {
             for (let i = 0; i < traffic.length; i++) {
-                traffic[i].update(road.borders, []);
                 if ((this.y < traffic[i].y) && (traffic[i].passed == false)) {
                     traffic[i].passed = true;
                     this.score++;

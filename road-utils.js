@@ -42,9 +42,9 @@ function polysIntersect(poly1, poly2) {
 
 function getRGBA(value) {
     const alpha = Math.abs(value);
-    const R = value < 0 ? 0 : 255;
-    const G = R;
-    const B = value > 0 ? 0 : 255;
+    const R = value > 0 ? 0 : 255;
+    const G = value < 0 ? 0 : 255;
+    const B = R+G == 0 ? 255 : 0;
 
     return ("rgba(" + R + "," + G + "," + B + "," + alpha + ")");
 }
@@ -74,11 +74,11 @@ function spawnTraffic(bestCar) {
     if ( Math.abs(Math.abs(Math.abs(bestCar.y) - Math.abs(trafficMax.y))) > 800) {
         delay++;                                             // deletes farthest car from traffic, and adds new rand car. 
 /*        console.log(delay);*/
-        if (delay > 70) {
+        if (delay > 30) {
             deleteCar(traffic, trafficMax);
             generateTraffic(1, bestCar, "!START");
-            if (traffic.length < 8) {
-                generateTraffic(2, bestCar, "!START");
+            if (traffic.length < 5) {
+                generateTraffic(1, bestCar, "!START");
             } else if (traffic.length>5){
                 delay3--;
             }
@@ -89,9 +89,9 @@ function spawnTraffic(bestCar) {
     } else if (Math.abs(Math.abs(Math.abs(bestCar.y) - Math.abs(trafficMin.y))) > 800) {
         delay2++;
 /*        console.log(delay2);*/
-        if (delay2 > 50) {
+        if (delay2 > 30) {
             deleteCar(traffic, trafficMin);
-            if (traffic.length < 8) {
+            if (traffic.length < 6) {
             generateTraffic(1, bestCar, "!START");
             }
             delay2 = 0
