@@ -193,7 +193,7 @@ function animate(time) {
 
   //  deletes damaged cars
     for (let i = 0; i < cars.length; i++) {
-        if ((cars[i].damaged==true) && (cars.length > 1)) {
+        if ((cars[i].damaged==true) && (cars[i]!=bestCar)) {
             delay4++;
             if (delay4 > 90) {
                 deleteCar(cars, cars[i])
