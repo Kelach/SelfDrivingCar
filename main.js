@@ -44,9 +44,9 @@ if (localStorage.getItem("bestBrain")) {
    
 }
 
-
-generateTraffic(1, bestCar, "START");
+generateTraffic(1, bestCar, "FIXED",2); 
 generateTraffic(1, bestCar, "FIXED"); 
+generateTraffic(1, bestCar, "FIXED", 0); 
 
 animate();
 
@@ -80,7 +80,7 @@ function discard() {
     localStorage.removeItem("recordV");
 }
 
-function generateTraffic(N, mainCar, type) {
+function generateTraffic(N, mainCar, type, L=1) {
 
 
     // generates N number of "NOKEYS" cars with random speeds, x, and (mainCar.y +) y values). 
@@ -100,7 +100,7 @@ function generateTraffic(N, mainCar, type) {
         if (type != "FIXED") {                                  // 'FIXED' arg sets car in middle lane
              randLane = getRandomInt(road.laneCount); 
         } else {
-             randLane = 1;
+             randLane = L;
         }
 
         traffic.push(new Car(road.getLaneCenter(randLane),
@@ -164,8 +164,8 @@ function animate(time) {
         console.log("saved");
     }
 
-    if ((cars.every(c => c.damaged == true))                                    
-        || (bestCar.speed < 3) || (bestCar.damaged)) {                          
+    if ((cars.every(c => c.damaged == true))
+        || (bestCar.speed < (bestCar.speedMax/1.5)) || (bestCar.damaged)) {                          
         delay3++;                                                               
 
         if ((delay3 > 300)) {

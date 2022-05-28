@@ -5,7 +5,7 @@ class Car {
         this.width = width;
         this.height = height;
 
-        this.speedMax = maxSpeed/5;
+        this.speedMax = maxSpeed/2;
         this.speed = 0; 
         this.angle = 0;
         this.damaged = false;
